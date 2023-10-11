@@ -15,6 +15,7 @@ quitButton = ['WorldView', 'DeckConfiguration', 'SettingPage', 'QuitButton']
 async def get_player_school():
     player_school = ["WorldView", "mainWindow", "sprSubBanner", "txtLevel"]
     player_school = player_school.replace('LEVEL 160','')
+    #return player_school, wait dis dont even work
 
 
 async def is_visible_by_path(base_window:Window, path: list[str]):
