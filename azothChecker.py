@@ -12,11 +12,6 @@ spellbook = ["WorldView", "DeckConfiguration"]
 playButton = ['WorldView', 'mainWindow', 'btnPlay']
 quitButton = ['WorldView', 'DeckConfiguration', 'SettingPage', 'QuitButton']
 
-async def get_player_school():
-    player_school = ["WorldView", "mainWindow", "sprSubBanner", "txtLevel"]
-    player_school = player_school.replace('LEVEL 160','')
-    #return player_school, wait dis dont even work
-
 
 async def is_visible_by_path(base_window:Window, path: list[str]):
     # Credit to SirOlaf for the original function; I'm modifying it - credit ultimate314
@@ -51,7 +46,7 @@ async def click_window_until_gone(client, path): #i did this im very cool - milw
 
 
 
-async def get_player_level(client: Client) -> str: # FAJ MADE THIS ONE TOO, starr fixed it
+async def get_player_school(client: Client) -> str: # FAJ MADE THIS ONE TOO, starr fixed it
     txtLevel = ["WorldView", "", "PetLevelUpWindow", "wndPetLevelBkg", "txtAnnounceText"] #<-- looks like dis
     window : Window = await window_from_path(client.root_window, txtLevel)
     if window:
@@ -98,9 +93,12 @@ async def main_checker(p):
 
 
 async def logic(p):
+    await setup(p)
     wizards = [] # create list for all wizards
-    wizard = await get_player_school() # current wizard on the screen school is captured
-    while await get_player_school() != "" and length != 6: # when the school isnt blank, idk why i added this tbh..., this should add all 6 wizards to the list then stop
+    wizard = await get_player_school(client) # current wizard on the screen school is captured
+    wizard = wizard.split(' ')
+    wizard[3] = wizard[3].replace(')', '') # changes ex. level 160 (prime diviner), to 160 diviner
+    while await get_player_school(client) != "" and length != 6: # when the school isnt blank, idk why i added this tbh..., this should add all 6 wizards to the list then stop
         if wizard not in wizards: # if the current wizard is not already in the list
             wizards.append(wizard)    # add it
             await p.send_key(Keycode.TAB, 0.1) # go to next wizard
@@ -119,7 +117,10 @@ async def logic(p):
 
             
 
-
+async def setup(client): #activates all hooks that it can for a client
+    print("Activating Special Lxghtend Hooks :o :p :3")
+    await client.activate_hooks(wait_for_ready = False)
+    await client.mouse_handler.activate_mouseless()
 
 
 async def startup():
@@ -134,7 +135,7 @@ async def startup():
                 handle = list(set(get_all_wizard_handles()).difference(handles))[0] #finds the new handle made by start_instance()
                 instance_login(handle, accountList[i][0], accountList[i][1])
                 p = Client(handle) #defines a client
-                await logic(p)
+                await logic(p) 
 
 
 
