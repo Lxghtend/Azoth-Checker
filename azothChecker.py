@@ -119,6 +119,7 @@ async def logic(p):
 
 async def setup(client): #activates all hooks that it can for a client
     print("Activating Special Lxghtend Hooks :o :p :3")
+    client = handler.get_new_clients()[0]
     await client.activate_hooks(wait_for_ready = False)
     await client.mouse_handler.activate_mouseless()
 
