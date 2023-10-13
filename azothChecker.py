@@ -127,7 +127,13 @@ async def setup(p): #activates all hooks that it can for a client
 
 
 async def startup():
-     with open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"accounts.txt")) as my_file:
+    print("""
+    Azoth Checker By Lxghtend      
+    Credits:
+    Milwr - used A LOT of his code in this bot
+    Notfaj - helpin as always :3
+              """) 
+    with open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"accounts.txt")) as my_file:
             accountList = [
                 line.strip().split(":") for line in my_file.read().split("\n") #reads account list and puts into into a list
                 ]
