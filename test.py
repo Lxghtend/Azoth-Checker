@@ -1,3 +1,4 @@
+
 import os
 import subprocess
 import wizwalker
@@ -73,7 +74,7 @@ async def tc_button():
 total_azoth_stacks = 0
 
 
-
+'''
 async def main_checker(p):
     while not is_visible_by_path(p.root_window, spellbook):
         await p.send_key(Keycode.P)
@@ -85,39 +86,24 @@ async def main_checker(p):
         total_azoth_stacks = total_azoth_stacks + 1
         print(total_azoth_stacks)
     else:
-        pass
+        print("No azoth on current wizard")
     while not await is_visible_by_path(p.root_window, quitButton):
         await p.send_key(Keycode.ESC, 0.05)
     if await is_visible_by_path(p.root_window, quitButton):
         await click_window_from_path(p.mouse_handler, p.root_window, quitButton)
+        '''
     
 
 
 async def logic(p):
     await setup(p)
+    #await new(p)
+    await asyncio.sleep(4)
     wizards = [] # create list for all wizards
     wizard = await get_player_school(p) # current wizard on the screen school is captured
-    print(await get_player_school(p))
-    wizard = wizard.split(' ')
+    print(wizard)
+    #wizard = wizard.split(' ')
     #wizard[3] = wizard[3].replace(')', '') # changes ex. level 160 (prime diviner), to 160 diviner
-    length = len(wizards)
-    while wizard != "" and length != 6: # when the school isnt blank, idk why i added this tbh..., this should add all 6 wizards to the list then stop, if u have 7 on a storage acc for some rzn, change it to 7
-        if wizard not in wizards: # if the current wizard is not already in the list
-            wizards.append(wizard)    # add it
-            await p.send_key(Keycode.TAB, 0.1) # go to next wizard
-    print("Checking for azoth stacks on", wizards)
-    time = 0
-    for i in range(length):
-        while wizard != wizards[time]:
-            await p.send_key(Keycode.TAB, 0.1)
-        if wizard == wizards[time]:
-            await p.click_window_until_gone(p.mouse_handler, p.root_window, playButton)
-            await asyncio.sleep(8)
-            await main_checker(p)
-            time = time + 1
-    subprocess.call(f"taskkill /F /PID {p.process_id}",stdout=subprocess.DEVNULL) #kills the current wizard client
-
-            
 
 async def setup(p): #activates all hooks that it can for a client
     print("Activating Special Lxghtend Hooks :o :p :3")
@@ -125,7 +111,20 @@ async def setup(p): #activates all hooks that it can for a client
     await p.hook_handler.activate_render_context_hook(wait_for_ready=False)
     await p.mouse_handler.activate_mouseless()
 
-
+    '''
+async def new(p):
+    await p.send_key(Keycode.ENTER)
+    await asyncio.sleep(5)
+    await p.activate_hooks(wait_for_ready = False)
+    print("new hooks on")
+    await asyncio.sleep(2)
+    await p.send_key(Keycode.ESC)
+    await asyncio.sleep(1)
+    await click_window_from_path(p.root_window, quitButton)
+    await asyncio.sleep(1)
+    await p.send_key(Keycode.ENTER)
+    await asyncio.sleep(6)
+    '''
 async def startup():
      with open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"accounts.txt")) as my_file:
             accountList = [
