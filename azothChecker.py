@@ -48,7 +48,7 @@ async def click_window_until_gone(client, path): #i did this im very cool - milw
 
 
 async def get_player_school(p) -> str: # FAJ MADE THIS ONE TOO, starr fixed it
-    txtLevel = ["WorldView", "", "PetLevelUpWindow", "wndPetLevelBkg", "txtAnnounceText"] #<-- looks like dis
+    txtLevel = ['WorldView', 'mainWindow', 'sprSubBanner', 'txtLevel']
     window : Window = await window_from_path(p.root_window, txtLevel)
     if window:
       return await window.maybe_text()
