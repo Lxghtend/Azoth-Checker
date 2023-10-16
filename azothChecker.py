@@ -147,8 +147,42 @@ async def startup():
                 await asyncio.sleep(5)
                 await p.send_key(Keycode.P)
                 await asyncio.sleep(10)
-                await logic(p) 
+                await new_logic(p) 
 
+
+
+
+                
+
+async def new_logic(p):
+    await setup(p)
+    wizards = []
+    wizards_print = []
+    for i in range(6):
+        wizard = await get_player_school(p)
+        wizard_print = wizard.replace('<center>', '').replace('</center>', '')
+        wizard_print = wizard_print.split(' ')
+        wizard_print[3] = wizard_print[3].replace(')', '') # changes ex. level 160 (prime diviner), to 160 diviner
+        wizard_print = wizard_print[1], wizard_print[3]
+        wizard_print = ' '.join(wizard_print)
+        wizards_print.append(wizard_print)
+        wizards.append(wizard)
+        await p.send_key(Keycode.TAB)
+        await asyncio.sleep(1)
+    print("Azoth Checker is using wizards:", wizards_print)
+    print(wizards[0])
+    time = 0
+    for i in range(6):
+        wizard = await get_player_school(p)
+        while wizard != wizards[time]:
+            await p.send_key(Keycode.TAB, 0.1)
+            wizard = await get_player_school(p)
+        if wizard == wizards[time]:
+            await click_window_until_gone(p.root_window, playButton)
+            await asyncio.sleep(8)
+            await main_checker(p)
+            time = time + 1
+    subprocess.call(f"taskkill /F /PID {p.process_id}",stdout=subprocess.DEVNULL) #kills the current wizard client
 
 
 
