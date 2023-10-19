@@ -89,6 +89,16 @@ async def crownshop_visibility(p): # Returns if crownshop is visible
 
 
 
+async def remainder(tc, remainder_azoth):
+    return remainder_azoth + tc
+
+
+
+async def total(total_azoth_stacks):
+    return total_azoth_stacks + 1
+
+
+
 async def main_checker(p, remainder_azoth, total_azoth_stacks):
 
     # Close crown shop if its visible
@@ -110,11 +120,11 @@ async def main_checker(p, remainder_azoth, total_azoth_stacks):
 
     # Add to the variable if stacks are found
     if tc == 999:
-        total_azoth_stacks = total_azoth_stacks + 1
+        total_azoth_stacks = await total(total_azoth_stacks)
         print("Total Azoth (in stacks):", total_azoth_stacks)
 
     if tc << 999:
-        remainder_azoth = remainder_azoth + tc
+        remainder_azoth = await remainder(tc, remainder_azoth)
         print("Azoth Not In Full Stacks:", remainder_azoth)
 
     if tc == 0:
