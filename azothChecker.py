@@ -89,17 +89,9 @@ async def crownshop_visibility(p): # Returns if crownshop is visible
 
 
 
-async def remainder(tc, remainder_azoth):
-    return remainder_azoth + tc
+async def main_checker(p):
 
-
-
-async def total(total_azoth_stacks):
-    return total_azoth_stacks + 1
-
-
-
-async def main_checker(p, remainder_azoth, total_azoth_stacks):
+    global remainder_azoth, total_azoth_stacks
 
     # Close crown shop if its visible
     while await crownshop_visibility(p) == True:
@@ -109,8 +101,7 @@ async def main_checker(p, remainder_azoth, total_azoth_stacks):
     # Navigate to tc window
     #while not is_visible_by_path(p.root_window, tcButton):
     await p.send_key(Keycode.P)
-    await asyncio.sleep(0.1)
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     await click_window_from_path(p.mouse_handler, p.root_window, tcButton)
 
     # Create a variable for TC
@@ -120,12 +111,12 @@ async def main_checker(p, remainder_azoth, total_azoth_stacks):
 
     # Add to the variable if stacks are found
     if tc == 999:
-        total_azoth_stacks = await total(total_azoth_stacks)
-        print("Total Azoth (in stacks):", total_azoth_stacks)
+        total_azoth_stacks = total_azoth_stacks + 1
+        print("Stack found on current wizard.")
 
-    if tc << 999:
-        remainder_azoth = await remainder(tc, remainder_azoth)
-        print("Azoth Not In Full Stacks:", remainder_azoth)
+    if tc < 999 and tc > 0:
+        remainder_azoth = remainder_azoth + tc
+        print("Azoth not in full stack found on current wizard.")
 
     if tc == 0:
         print("No azoth found on current wizard.")
@@ -139,6 +130,8 @@ async def main_checker(p, remainder_azoth, total_azoth_stacks):
 
 
 async def new_logic(p):
+
+    global total_azoth_stacks, remainder_azoth
 
     # Attaches hooks
     await setup(p)
@@ -182,9 +175,12 @@ async def new_logic(p):
 
         if wizard == wizards[time]:
             await click_window_until_gone(p, playButton)
-            await asyncio.sleep(8)
-            await main_checker(p, remainder_azoth, total_azoth_stacks)
+            await asyncio.sleep(5)
+            await main_checker(p)
             time = time + 1
+
+    print("Total Azoth (in stacks):", total_azoth_stacks)
+    print("Azoth Not In Full Stacks:", remainder_azoth)
 
     subprocess.call(f"taskkill /F /PID {p.process_id}",stdout=subprocess.DEVNULL) # Kills the current wizard client
 
