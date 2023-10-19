@@ -188,7 +188,7 @@ async def new_logic(p):
 
 async def setup(p): #Activates needed hooks for a client
 
-    print("Activating Special Lxghtend Hooks :o :p :3")
+    print("Activating Special Lxghtend Hooks :o")
 
     await p.hook_handler.activate_root_window_hook(wait_for_ready=False)
     await p.hook_handler.activate_render_context_hook(wait_for_ready=False)
